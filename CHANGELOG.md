@@ -3,12 +3,8 @@
 
 ### Bug Fixes
 
+* announce single task completion only 52f7053
 * include download urls in userscript metadata (#2) 92a467f, closes #2
-
-
-### Features
-
-* support single task status in codex-helper 9230b19
 
 
 

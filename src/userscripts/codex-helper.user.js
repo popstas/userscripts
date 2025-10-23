@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         codex-helper
 // @namespace    https://chatgpt.com/codex
-// @version      1.7.1
-// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
+// @version      1.7.2
+// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса (с задержкой 1s). Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
 // @match        https://chatgpt.com/codex*
 // @run-at       document-idle
 // @grant        none
@@ -296,7 +296,14 @@
     active: false,
     completed: false,
     lastName: '',
+    completionTimer: null,
   };
+
+  function cancelSingleCompletionTimer() {
+    if (!singleState.completionTimer) return;
+    clearTimeout(singleState.completionTimer);
+    singleState.completionTimer = null;
+  }
 
   function getSingleTaskName() {
     const selectors = [
@@ -330,6 +337,7 @@
     if (singleState.lastName !== name) {
       singleState.active = false;
       singleState.completed = false;
+      cancelSingleCompletionTimer();
       singleState.lastName = name;
     }
 
@@ -342,16 +350,24 @@
         singleState.completed = false;
         log('Single task active:', name, statusText);
       }
+      cancelSingleCompletionTimer();
     } else {
-      if (singleState.active && !singleState.completed) {
-        if (name) {
-          const msg = `Task complete: ${name}`;
-          HUD.show(msg, 'ok');
-          speak(msg);
-        }
-        singleState.completed = true;
-        singleState.active = false;
-        log('Single task completed:', name);
+      if (singleState.active && !singleState.completed && !singleState.completionTimer) {
+        singleState.completionTimer = setTimeout(() => {
+          singleState.completionTimer = null;
+          const stillMissing = !getStatusInfo();
+          if (!stillMissing) return;
+          if (singleState.active && !singleState.completed) {
+            if (singleState.lastName) {
+              const msg = `Task complete: ${singleState.lastName}`;
+              HUD.show(msg, 'ok');
+              speak(msg);
+            }
+            singleState.completed = true;
+            singleState.active = false;
+            log('Single task completed:', singleState.lastName);
+          }
+        }, 1000);
       }
     }
 
