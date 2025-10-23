@@ -5,6 +5,8 @@ const projectRoot = path.resolve(__dirname, '..', '..');
 const userscriptsDir = path.join(projectRoot, 'src', 'userscripts');
 const demoDir = path.join(projectRoot, 'assets', 'demo');
 const outputPath = path.join(userscriptsDir, 'userscripts.json');
+const rawBaseUrl =
+  'https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/';
 
 function parseMetadataBlock(content) {
   const headerMatch = content.match(/\/\/ ==UserScript==([\s\S]*?)\/\/ ==\/UserScript==/);
@@ -91,6 +93,33 @@ async function findDemoAssets(baseName) {
   return assets;
 }
 
+function ensureUpdateUrl(content, rawUrl) {
+  const blockMatch = content.match(/\/\/ ==UserScript==([\s\S]*?)\/\/ ==\/UserScript==/);
+
+  if (!blockMatch) {
+    throw new Error('Unable to locate metadata block.');
+  }
+
+  const block = blockMatch[0];
+  if (/^\/\/\s*@updateURL\b/m.test(block)) {
+    return { content, changed: false };
+  }
+
+  const lineEnding = block.includes('\r\n') ? '\r\n' : '\n';
+  const closingMarker = `${lineEnding}// ==/UserScript==`;
+  const updatedBlock = block.replace(
+    closingMarker,
+    `${lineEnding}// @updateURL ${rawUrl}${lineEnding}// ==/UserScript==`
+  );
+
+  const updatedContent =
+    content.slice(0, blockMatch.index) +
+    updatedBlock +
+    content.slice(blockMatch.index + block.length);
+
+  return { content: updatedContent, changed: true };
+}
+
 async function parseUserscripts() {
   const entries = await fs.readdir(userscriptsDir, { withFileTypes: true });
   const scripts = [];
@@ -101,7 +130,15 @@ async function parseUserscripts() {
     }
 
     const filePath = path.join(userscriptsDir, entry.name);
-    const content = await fs.readFile(filePath, 'utf8');
+    let content = await fs.readFile(filePath, 'utf8');
+    const rawUrl = `${rawBaseUrl}${entry.name}`;
+    const { content: ensuredContent, changed } = ensureUpdateUrl(content, rawUrl);
+
+    if (changed) {
+      await fs.writeFile(filePath, ensuredContent, 'utf8');
+      content = ensuredContent;
+    }
+
     const meta = parseMetadataBlock(content);
     const baseName = entry.name.replace(/\.userscript\.js$/i, '');
     const demoAssets = await findDemoAssets(baseName);
@@ -109,6 +146,7 @@ async function parseUserscripts() {
     scripts.push({
       id: baseName,
       file: path.relative(projectRoot, filePath).replace(/\\/g, '/'),
+      rawUrl,
       ...meta,
       match: meta.match,
       grant: meta.grant,

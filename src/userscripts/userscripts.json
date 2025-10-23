@@ -2,6 +2,7 @@
   {
     "id": "telegram-bladificator",
     "file": "src/userscripts/telegram-bladificator.userscript.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js",
     "match": [
       "https://web.telegram.org/*"
     ],
@@ -16,6 +17,7 @@
   {
     "id": "chatgpt-question-buttons",
     "file": "src/userscripts/chatgpt-question-buttons.userscript.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js",
     "match": [
       "https://chatgpt.com/*"
     ],
@@ -32,6 +34,7 @@
   {
     "id": "codex-helper",
     "file": "src/userscripts/codex-helper.userscript.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.userscript.js",
     "match": [
       "https://chatgpt.com/codex*"
     ],
@@ -46,6 +49,7 @@
   {
     "id": "whatsapp-fix",
     "file": "src/userscripts/whatsapp-fix.userscript.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.userscript.js",
     "match": [
       "https://web.whatsapp.com/*"
     ],

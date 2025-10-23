@@ -1,5 +1,5 @@
-const { parseUserscripts } = require('./scripts/parse-userscripts');
-const { generateReadme } = require('./scripts/generate-readme');
+const { parseUserscripts } = require('./parse-userscripts');
+const { generateReadme } = require('./generate-readme');
 const { spawn } = require('child_process');
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';

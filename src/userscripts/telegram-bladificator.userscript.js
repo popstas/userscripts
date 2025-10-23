@@ -7,6 +7,7 @@
 // @match        https://web.telegram.org/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=telegram.org
 // @grant        GM_addStyle
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js
 // ==/UserScript==
 
 (function() {

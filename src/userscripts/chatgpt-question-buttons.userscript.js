@@ -6,6 +6,7 @@
 // @match        https://chatgpt.com/*
 // @run-at       document-idle
 // @grant        none
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js
 // ==/UserScript==
 
 (function () {

@@ -7,7 +7,7 @@
     "parse": "node src/scripts/parse-userscripts.js",
     "generate": "node src/scripts/generate-readme.js",
     "changelog": "npx conventional-changelog-cli --config ./conventional-changelog-config.js -p angular -i CHANGELOG.md -s -r 0",
-    "build": "node src/build.js",
+    "build": "node src/scripts/build.js",
     "version-post": "npm run build"
   },
   "devDependencies": {

@@ -6,25 +6,38 @@ const userscriptsDir = path.join(projectRoot, 'src', 'userscripts');
 const dataPath = path.join(userscriptsDir, 'userscripts.json');
 const readmePath = path.join(userscriptsDir, 'README.md');
 
-function formatList(values, transform = (value) => value) {
+function formatInlineList(values) {
   if (!values || values.length === 0) {
     return '—';
   }
 
-  return values.map((value) => transform(value)).join(', ');
+  return values.map((value) => '`' + value + '`').join(', ');
 }
 
-function formatAssets(assets) {
-  if (!assets || assets.length === 0) {
+function formatDescription(description) {
+  if (!description || !description.trim()) {
     return '—';
   }
 
-  return assets
-    .map((asset) => {
-      const label = path.basename(asset);
-      return `[${label}](${path.posix.join('..', '..', asset.replace(/\\\\/g, '/'))})`;
-    })
-    .join(', ');
+  return description.trim();
+}
+
+function resolveFromReadme(targetPath) {
+  return path.posix.join('..', '..', targetPath.replace(/\\/g, '/'));
+}
+
+function formatDemoSection(lines, assets) {
+  lines.push('**Demo:**');
+
+  if (!assets || assets.length === 0) {
+    lines.push('—');
+    return;
+  }
+
+  assets.forEach((asset) => {
+    const label = path.basename(asset);
+    lines.push(`![${label}](${resolveFromReadme(asset)})`);
+  });
 }
 
 async function generateReadme() {
@@ -39,18 +52,20 @@ async function generateReadme() {
   ];
 
   scripts.forEach((script) => {
-    lines.push(`## ${script.name}`);
+    lines.push(`## ${script.name} ${script.version}`);
     lines.push('');
-    lines.push(`- **File:** \`${script.file}\``);
-    lines.push(`- **Version:** ${script.version}`);
-    lines.push(`- **Description:** ${script.description}`);
+    lines.push(formatDescription(script.description));
+    lines.push('');
     lines.push(
-      `- **Matches:** ${formatList(script.match, (value) => '`' + value + '`')}`
+      `- **File:** [\`${script.file}\`](${resolveFromReadme(script.file)})`
     );
     lines.push(
-      `- **Grants:** ${formatList(script.grant, (value) => '`' + value + '`')}`
+      `- **RAW** [${path.basename(script.file)}](${script.rawUrl})`
     );
-    lines.push(`- **Demo assets:** ${formatAssets(script.assets)}`);
+    lines.push(`- **Matches:** ${formatInlineList(script.match)}`);
+    lines.push(`- **Grants:** ${formatInlineList(script.grant)}`);
+    lines.push('');
+    formatDemoSection(lines, script.assets);
     lines.push('');
   });
 
