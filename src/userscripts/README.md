@@ -27,11 +27,11 @@ Finds the last paragraph with a question in assistant messages and adds Yes butt
 
 ![chatgpt-question-buttons.png](../../assets/demo/chatgpt-question-buttons.png)
 
-## codex-helper 1.7.0
+## codex-helper 1.7.1
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
 
-Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой (Checking git status, Completing the task и т.п.). Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
+Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
 
 - **File:** [`codex-helper.user.js`](../../src/userscripts/codex-helper.user.js)
 - **Matches:** `https://chatgpt.com/codex*`

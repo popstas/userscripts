@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         codex-helper
 // @namespace    https://chatgpt.com/codex
-// @version      1.7.0
-// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой (Checking git status, Completing the task и т.п.). Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
+// @version      1.7.1
+// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
 // @match        https://chatgpt.com/codex*
 // @run-at       document-idle
 // @grant        none
@@ -295,8 +295,6 @@
   const singleState = {
     active: false,
     completed: false,
-    announcedCompleting: false,
-    lastStatus: '',
     lastName: '',
   };
 
@@ -332,58 +330,31 @@
     if (singleState.lastName !== name) {
       singleState.active = false;
       singleState.completed = false;
-      singleState.announcedCompleting = false;
-      singleState.lastStatus = '';
       singleState.lastName = name;
     }
 
     const statusInfo = getStatusInfo();
     const statusText = statusInfo ? statusInfo.text : '';
     const hasStatus = Boolean(statusText);
-    const normalized = statusText.toLowerCase();
-    const isCompleting = hasStatus && normalized.includes('completing');
-
     if (hasStatus) {
       if (!singleState.active) {
         singleState.active = true;
         singleState.completed = false;
         log('Single task active:', name, statusText);
       }
-
-      if (statusText !== singleState.lastStatus) {
-        if (isCompleting) {
-          if (!singleState.announcedCompleting && name) {
-            const msg = `Completing the task: ${name}`;
-            HUD.show(msg, 'warn');
-            speak(msg);
-          }
-          singleState.announcedCompleting = true;
-        } else {
-          const msg = name ? `${statusText}: ${name}` : statusText;
-          HUD.show(msg, 'info');
-          speak(msg);
-        }
-      } else if (isCompleting && !singleState.announcedCompleting && name) {
-        const msg = `Completing the task: ${name}`;
-        HUD.show(msg, 'warn');
-        speak(msg);
-        singleState.announcedCompleting = true;
-      }
     } else {
       if (singleState.active && !singleState.completed) {
-        if (!singleState.announcedCompleting && name) {
+        if (name) {
           const msg = `Task complete: ${name}`;
           HUD.show(msg, 'ok');
           speak(msg);
         }
         singleState.completed = true;
         singleState.active = false;
-        singleState.announcedCompleting = false;
         log('Single task completed:', name);
       }
     }
 
-    singleState.lastStatus = statusText;
   }
 
   const singleObserver = new MutationObserver(() => {
