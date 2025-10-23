@@ -58,13 +58,13 @@ async function generateReadme() {
     lines.push('');
     lines.push(`[Install](${script.rawUrl})`);
     lines.push('');
+    lines.push(formatDescription(script.description));
+    lines.push('');
     lines.push(
       `- **File:** [\`${filename}\`](${resolveFromReadme(script.file)})`
     );
     lines.push(`- **Matches:** ${formatInlineList(script.match)}`);
     lines.push(`- **Grants:** ${formatInlineList(script.grant)}`);
-    lines.push('');
-    lines.push(formatDescription(script.description));
     lines.push('');
     formatDemoSection(lines, script.assets);
     lines.push('');

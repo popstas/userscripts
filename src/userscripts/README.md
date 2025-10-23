@@ -6,22 +6,22 @@
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js)
 
+Разбавляет скучный чат с коллегами ноткой тупого юмора
+
 - **File:** [`telegram-bladificator.user.js`](../../src/userscripts/telegram-bladificator.user.js)
 - **Matches:** `https://web.telegram.org/*`
 - **Grants:** `GM_addStyle`
-
-Разбавляет скучный чат с коллегами ноткой тупого юмора
 
 
 ## ChatGPT Question Buttons 1.2.2
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
 
+Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
+
 - **File:** [`chatgpt-question-buttons.user.js`](../../src/userscripts/chatgpt-question-buttons.user.js)
 - **Matches:** `https://chatgpt.com/*`
 - **Grants:** `none`
-
-Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 
 **Demo:**
 
@@ -31,22 +31,22 @@ Finds the last paragraph with a question in assistant messages and adds Yes butt
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
 
+Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
+
 - **File:** [`codex-helper.user.js`](../../src/userscripts/codex-helper.user.js)
 - **Matches:** `https://chatgpt.com/codex*`
 - **Grants:** `none`
-
-Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
 
 
 ## Whatsapp fix 0.1.2
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
 
+Hide "New messages" block in chat
+
 - **File:** [`whatsapp-fix.user.js`](../../src/userscripts/whatsapp-fix.user.js)
 - **Matches:** `https://web.whatsapp.com/*`
 - **Grants:** `GM_xmlhttpRequest`, `GM_getResourceText`, `GM_addStyle`
-
-Hide "New messages" block in chat
 
 
 ## Installation
