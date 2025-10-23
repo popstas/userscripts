@@ -13,11 +13,11 @@
 - **Grants:** `GM_addStyle`
 
 
-## ChatGPT Question Buttons 1.2.2
+## ChatGPT Question Buttons 1.3.0
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
 
-Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
+Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages. Watches task status buttons, emits events and logs when statuses update or complete.
 
 - **File:** [`chatgpt-question-buttons.user.js`](../../src/userscripts/chatgpt-question-buttons.user.js)
 - **Matches:** `https://chatgpt.com/*`

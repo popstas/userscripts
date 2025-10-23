@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ChatGPT Question Buttons
 // @namespace    https://greasyfork.org/en/users/you
-// @version      1.2.2
-// @description  Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
+// @version      1.3.0
+// @description  Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages. Watches task status buttons, emits events and logs when statuses update or complete.
 // @match        https://chatgpt.com/*
 // @run-at       document-idle
 // @grant        none
@@ -22,6 +22,180 @@
   };
 
   const BTN_CLASS = 'cgpt-yes-btn';
+  const STATUS_EVENT_NAME = 'cgpt-task-status';
+  const STATUS_SELECTORS = {
+    statusText: '.line-clamp-1.font-medium',
+    statusButton: 'button.text-token-text-secondary.text-sm.select-none',
+    taskName: 'div.flex.min-w-0.flex-col.text-sm span.truncate.font-medium',
+  };
+
+  const statusState = {
+    activeTexts: new Set(),
+    seenCompleting: false,
+    lastTaskName: '',
+    lastStatusText: '',
+    lastCompletingText: '',
+  };
+
+  const runMicrotask = typeof queueMicrotask === 'function'
+    ? queueMicrotask.bind(window)
+    : (cb) => Promise.resolve().then(cb);
+
+  function toArray(iterable) {
+    return Array.from(iterable || []);
+  }
+
+  function dispatchStatusEvent(detail) {
+    const payload = {
+      statuses: detail.statuses || toArray(statusState.activeTexts),
+      taskName: detail.taskName || statusState.lastTaskName || '',
+      timestamp: Date.now(),
+      ...detail,
+    };
+
+    if (typeof console !== 'undefined' && console.info) {
+      const prefix = '[cgpt-status]';
+      if (payload.type === 'status') {
+        console.info(`${prefix} ${payload.taskName ? `[${payload.taskName}] ` : ''}${payload.status}`);
+      } else if (payload.type === 'completed') {
+        const lastInfo = payload.lastKnownStatus ? ` (last: ${payload.lastKnownStatus})` : '';
+        console.info(`${prefix} ${payload.taskName ? `[${payload.taskName}] ` : ''}Task completed${lastInfo}`);
+      } else if (payload.type === 'task') {
+        console.info(`${prefix} Task selected: ${payload.taskName}`);
+      }
+    }
+
+    try {
+      const evt = typeof window.CustomEvent === 'function'
+        ? new CustomEvent(STATUS_EVENT_NAME, { detail: payload })
+        : (function () {
+            const custom = document.createEvent('CustomEvent');
+            custom.initCustomEvent(STATUS_EVENT_NAME, false, false, payload);
+            return custom;
+          })();
+      window.dispatchEvent(evt);
+    } catch (error) {
+      // noop
+    }
+
+    window.__cgptTaskStatus = {
+      taskName: statusState.lastTaskName,
+      statuses: payload.statuses,
+      lastEvent: payload,
+      seenCompleting: statusState.seenCompleting,
+    };
+  }
+
+  function extractTaskName() {
+    const backBtn = document.querySelector('button[aria-label="Go back to tasks"]');
+    if (backBtn) {
+      const header = backBtn.closest('.border-b-token-border-default');
+      const nameEl = header?.querySelector('span.truncate.font-medium');
+      const name = (nameEl?.textContent || '').trim();
+      if (name) return name;
+    }
+    const nameEl = document.querySelector(STATUS_SELECTORS.taskName);
+    const text = (nameEl?.textContent || '').trim();
+    return text;
+  }
+
+  function findStatusButtons() {
+    const candidates = document.querySelectorAll(STATUS_SELECTORS.statusText);
+    const buttons = new Set();
+    candidates.forEach((span) => {
+      const btn = span.closest('button');
+      if (!btn) return;
+      if (!btn.classList.contains('select-none')) return;
+      if (!btn.classList.contains('text-sm')) return;
+      if (!btn.classList.contains('text-token-text-secondary')) return;
+      if (!btn.matches(STATUS_SELECTORS.statusButton)) return;
+      buttons.add(btn);
+    });
+    return toArray(buttons);
+  }
+
+  function collectStatusTexts() {
+    const texts = [];
+    const buttons = findStatusButtons();
+    buttons.forEach((btn) => {
+      const span = btn.querySelector(STATUS_SELECTORS.statusText);
+      const text = (span?.textContent || '').trim();
+      if (text) texts.push(text);
+    });
+    return texts;
+  }
+
+  function updateStatusState() {
+    const currentTaskName = extractTaskName();
+    if (currentTaskName && currentTaskName !== statusState.lastTaskName) {
+      statusState.lastTaskName = currentTaskName;
+      statusState.activeTexts.clear();
+      statusState.seenCompleting = false;
+      statusState.lastStatusText = '';
+      statusState.lastCompletingText = '';
+      dispatchStatusEvent({ type: 'task', status: '', statuses: [], taskName: currentTaskName });
+    }
+
+    const statuses = collectStatusTexts();
+    const unique = Array.from(new Set(statuses));
+    const uniqueSet = new Set(unique);
+    const prevSet = statusState.activeTexts;
+    const hadStatuses = prevSet.size > 0;
+
+    const newStatuses = unique.filter((text) => !prevSet.has(text));
+    newStatuses.forEach((text) => {
+      dispatchStatusEvent({ type: 'status', status: text, statuses: unique });
+      if (/completing/i.test(text)) {
+        statusState.seenCompleting = true;
+        statusState.lastCompletingText = text;
+      }
+      statusState.lastStatusText = text;
+    });
+
+    if (!newStatuses.length && unique.length) {
+      const last = unique[unique.length - 1];
+      if (last !== statusState.lastStatusText) {
+        statusState.lastStatusText = last;
+      }
+      if (/completing/i.test(last)) {
+        statusState.seenCompleting = true;
+        statusState.lastCompletingText = last;
+      }
+    }
+
+    statusState.activeTexts = uniqueSet;
+
+    if (!unique.length) {
+      if (hadStatuses && statusState.seenCompleting) {
+        dispatchStatusEvent({
+          type: 'completed',
+          status: 'Task completed',
+          statuses: [],
+          lastKnownStatus: statusState.lastCompletingText || statusState.lastStatusText || '',
+        });
+      }
+      statusState.seenCompleting = false;
+      statusState.lastCompletingText = '';
+      statusState.lastStatusText = '';
+    }
+
+    window.__cgptTaskStatus = {
+      taskName: statusState.lastTaskName,
+      statuses: unique,
+      lastStatus: statusState.lastStatusText,
+      seenCompleting: statusState.seenCompleting,
+    };
+  }
+
+  let statusCheckScheduled = false;
+  function scheduleStatusCheck() {
+    if (statusCheckScheduled) return;
+    statusCheckScheduled = true;
+    runMicrotask(() => {
+      statusCheckScheduled = false;
+      updateStatusState();
+    });
+  }
 
   function getPromptEditable() {
     return document.querySelector(SELECTORS.promptEditable);
@@ -125,6 +299,9 @@
   }
 
   const observer = new MutationObserver((mutations) => {
+    if (mutations && mutations.length) {
+      scheduleStatusCheck();
+    }
     for (const m of mutations) {
       if (m.type === 'childList' && m.addedNodes && m.addedNodes.length) {
         m.addedNodes.forEach((node) => {
@@ -149,8 +326,24 @@
       childList: true,
       subtree: true,
       attributes: true,
+      characterData: true,
       attributeFilter: ['data-message-author-role', 'class'],
     });
+  }
+
+  let statusIntervalId = null;
+  let visibilityListenerAdded = false;
+  function startStatusWatcher() {
+    updateStatusState();
+    if (!statusIntervalId) {
+      statusIntervalId = setInterval(updateStatusState, 1000);
+    }
+    if (!visibilityListenerAdded && typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) scheduleStatusCheck();
+      });
+      visibilityListenerAdded = true;
+    }
   }
 
   function start() {
@@ -168,6 +361,7 @@
     }, 1000);
 
     startObservers();
+    startStatusWatcher();
   }
 
   if (document.readyState === 'loading') {
