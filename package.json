@@ -1,0 +1,16 @@
+{
+  "name": "userscripts",
+  "version": "1.0.0",
+  "description": "Tampermonkey userscripts utilities",
+  "license": "MIT",
+  "scripts": {
+    "parse": "node src/scripts/parse-userscripts.js",
+    "generate": "node src/scripts/generate-readme.js",
+    "changelog": "npx conventional-changelog-cli --config ./conventional-changelog-config.js -p angular -i CHANGELOG.md -s -r 0",
+    "build": "node src/build.js",
+    "version-post": "npm run build"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^4.1.0"
+  }
+}

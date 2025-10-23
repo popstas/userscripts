@@ -1,0 +1,62 @@
+[
+  {
+    "id": "telegram-bladificator",
+    "file": "src/userscripts/telegram-bladificator.userscript.js",
+    "match": [
+      "https://web.telegram.org/*"
+    ],
+    "grant": [
+      "GM_addStyle"
+    ],
+    "name": "Bladificator",
+    "version": "0.1",
+    "description": "try to take over the world!",
+    "assets": []
+  },
+  {
+    "id": "chatgpt-question-buttons",
+    "file": "src/userscripts/chatgpt-question-buttons.userscript.js",
+    "match": [
+      "https://chatgpt.com/*"
+    ],
+    "grant": [
+      "none"
+    ],
+    "name": "ChatGPT: Append last assistant question to prompt (init + SPA)",
+    "version": "1.2.0",
+    "description": "Находит последний <p> с вопросом в сообщениях ассистента и добавляет кнопки Yes / Yes N (если есть «или»); обрабатывает уже существующие и новые сообщения",
+    "assets": [
+      "assets/demo/chatgpt-question-buttons.png"
+    ]
+  },
+  {
+    "id": "codex-helper",
+    "file": "src/userscripts/codex-helper.userscript.js",
+    "match": [
+      "https://chatgpt.com/codex*"
+    ],
+    "grant": [
+      "none"
+    ],
+    "name": "codex-helper",
+    "version": "1.6.0",
+    "description": "Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени (\"Unnamed task\"). Не объявляет \"Task complete\", если ранее было \"Completing the task\". Считает \"Completing\" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).",
+    "assets": []
+  },
+  {
+    "id": "whatsapp-fix",
+    "file": "src/userscripts/whatsapp-fix.userscript.js",
+    "match": [
+      "https://web.whatsapp.com/*"
+    ],
+    "grant": [
+      "GM_xmlhttpRequest",
+      "GM_getResourceText",
+      "GM_addStyle"
+    ],
+    "name": "Whatsapp fix",
+    "version": "0.1",
+    "description": "",
+    "assets": []
+  }
+]
