@@ -10,7 +10,7 @@
       "GM_addStyle"
     ],
     "name": "Bladificator",
-    "version": "0.1",
+    "version": "0.1.1",
     "description": "Разбавляет скучный чат с коллегами ноткой тупого юмора",
     "assets": []
   },
@@ -25,7 +25,7 @@
       "none"
     ],
     "name": "ChatGPT Question Buttons",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is \"or\"); processes existing and new messages",
     "assets": [
       "assets/demo/chatgpt-question-buttons.png"
@@ -42,7 +42,7 @@
       "none"
     ],
     "name": "codex-helper",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени (\"Unnamed task\"). Не объявляет \"Task complete\", если ранее было \"Completing the task\". Считает \"Completing\" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).",
     "assets": []
   },
@@ -59,7 +59,7 @@
       "GM_addStyle"
     ],
     "name": "Whatsapp fix",
-    "version": "0.1",
+    "version": "0.1.1",
     "description": "Hide \"New messages\" block in chat",
     "assets": []
   }

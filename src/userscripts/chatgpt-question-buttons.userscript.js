@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         ChatGPT Question Buttons
 // @namespace    https://greasyfork.org/en/users/you
-// @version      1.2.0
+// @version      1.2.1
 // @description  Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 // @match        https://chatgpt.com/*
 // @run-at       document-idle
 // @grant        none
 // @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js
+// @downloadURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js
 // ==/UserScript==
 
 (function () {
