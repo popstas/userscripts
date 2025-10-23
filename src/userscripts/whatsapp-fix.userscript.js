@@ -2,7 +2,7 @@
 // @name         Whatsapp fix
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description
+// @description  Hide "New messages" block in chat
 // @author       popstas
 // @match        https://web.whatsapp.com/*
 // @grant        GM_xmlhttpRequest

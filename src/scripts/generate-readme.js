@@ -27,12 +27,11 @@ function resolveFromReadme(targetPath) {
 }
 
 function formatDemoSection(lines, assets) {
-  lines.push('**Demo:**');
-
   if (!assets || assets.length === 0) {
-    lines.push('—');
     return;
   }
+
+  lines.push('**Demo:**');
 
   assets.forEach((asset) => {
     const label = path.basename(asset);

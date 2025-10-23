@@ -4,19 +4,17 @@
 
 ## Bladificator 0.1
 
-try to take over the world!
+Разбавляет скучный чат с коллегами ноткой тупого юмора
 
 - **File:** [`src/userscripts/telegram-bladificator.userscript.js`](../../src/userscripts/telegram-bladificator.userscript.js)
 - **RAW** [telegram-bladificator.userscript.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js)
 - **Matches:** `https://web.telegram.org/*`
 - **Grants:** `GM_addStyle`
 
-**Demo:**
-—
 
-## ChatGPT: Append last assistant question to prompt (init + SPA) 1.2.0
+## ChatGPT Question Buttons 1.2.0
 
-Находит последний <p> с вопросом в сообщениях ассистента и добавляет кнопки Yes / Yes N (если есть «или»); обрабатывает уже существующие и новые сообщения
+Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 
 - **File:** [`src/userscripts/chatgpt-question-buttons.userscript.js`](../../src/userscripts/chatgpt-question-buttons.userscript.js)
 - **RAW** [chatgpt-question-buttons.userscript.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js)
@@ -35,18 +33,14 @@ try to take over the world!
 - **Matches:** `https://chatgpt.com/codex*`
 - **Grants:** `none`
 
-**Demo:**
-—
 
 ## Whatsapp fix 0.1
 
-—
+Hide "New messages" block in chat
 
 - **File:** [`src/userscripts/whatsapp-fix.userscript.js`](../../src/userscripts/whatsapp-fix.userscript.js)
 - **RAW** [whatsapp-fix.userscript.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.userscript.js)
 - **Matches:** `https://web.whatsapp.com/*`
 - **Grants:** `GM_xmlhttpRequest`, `GM_getResourceText`, `GM_addStyle`
 
-**Demo:**
-—
 

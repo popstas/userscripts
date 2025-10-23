@@ -11,7 +11,7 @@
     ],
     "name": "Bladificator",
     "version": "0.1",
-    "description": "try to take over the world!",
+    "description": "Разбавляет скучный чат с коллегами ноткой тупого юмора",
     "assets": []
   },
   {
@@ -24,9 +24,9 @@
     "grant": [
       "none"
     ],
-    "name": "ChatGPT: Append last assistant question to prompt (init + SPA)",
+    "name": "ChatGPT Question Buttons",
     "version": "1.2.0",
-    "description": "Находит последний <p> с вопросом в сообщениях ассистента и добавляет кнопки Yes / Yes N (если есть «или»); обрабатывает уже существующие и новые сообщения",
+    "description": "Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is \"or\"); processes existing and new messages",
     "assets": [
       "assets/demo/chatgpt-question-buttons.png"
     ]
@@ -60,7 +60,7 @@
     ],
     "name": "Whatsapp fix",
     "version": "0.1",
-    "description": "",
+    "description": "Hide \"New messages\" block in chat",
     "assets": []
   }
 ]
