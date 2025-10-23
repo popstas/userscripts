@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Bladificator
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  Разбавляет скучный чат с коллегами ноткой тупого юмора
 // @author       You
 // @match        https://web.telegram.org/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=telegram.org
 // @grant        GM_addStyle
-// @updateURL  https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js
-// @downloadURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js
+// @updateURL  https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js
+// @downloadURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js
 // ==/UserScript==
 
 (function() {
