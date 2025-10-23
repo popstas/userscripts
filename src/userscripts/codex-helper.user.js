@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         codex-helper
 // @namespace    https://chatgpt.com/codex
-// @version      1.7.2
-// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса (с задержкой 1s). Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
+// @version      1.7.3
+// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой, чтобы сообщить о завершении после исчезновения статуса (с задержкой 1s) и сбрасывать отслеживание списка при переходе. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
 // @match        https://chatgpt.com/codex*
 // @run-at       document-idle
 // @grant        none
@@ -147,6 +147,7 @@
   // container -> { active, completed, announcedCompleting, lastName }
   const state = new WeakMap();
   const tracked = new Set();
+  let currentViewMode = null;
 
   const qContainers = () => Array.from(document.querySelectorAll('.task-row-container'));
 
@@ -202,12 +203,15 @@
       completed: false,
       announcedCompleting: false,
       lastName: null,
+      suspended: false,
     });
+    const st = state.get(container);
+    if (st && currentViewMode === 'single') st.suspended = true;
     tracked.add(container);
 
     const update = () => {
       const st = state.get(container);
-      if (!st) return;
+      if (!st || st.suspended) return;
 
       const name = getListTaskName(container);
       const shimmer = hasShimmer(container);
@@ -237,7 +241,7 @@
         }
       } else {
         // Ни shimmer, ни svg>circle — считаем завершением
-        if (st.active && !st.completed) {
+        if (st.active && !st.completed && !st.suspended) {
           if (!st.announcedCompleting && name) { const msg = `Task complete: ${name}`; HUD.show(msg, 'ok'); speak(msg); } st.completed = true;
           st.active = false;
           st.announcedCompleting = false;
@@ -261,6 +265,7 @@
 
   // Наблюдаем документ: подключаем новые контейнеры, обрабатываем удаление
   const rootObserver = new MutationObserver(() => {
+    updateViewMode();
     qContainers().forEach(ensureObserved);
 
     for (const el of Array.from(tracked)) {
@@ -268,7 +273,7 @@
       if (!st) { tracked.delete(el); continue; }
       if (!el.isConnected) {
         // Контейнер удалён: если был активен, считаем завершением
-        if (st.active && !st.completed) {
+        if (st.active && !st.completed && !st.suspended) {
           if (!st.announcedCompleting && st.lastName) { const msg = `Task complete: ${st.lastName}`; HUD.show(msg, 'ok'); speak(msg); }
         }
         tracked.delete(el);
@@ -305,6 +310,56 @@
     singleState.completionTimer = null;
   }
 
+  function resetSingleState() {
+    cancelSingleCompletionTimer();
+    singleState.active = false;
+    singleState.completed = false;
+    singleState.lastName = '';
+  }
+
+  function detectViewMode() {
+    const path = (window.location && window.location.pathname) || '';
+    if (/^\/codex\/tasks\//.test(path)) return 'single';
+    if (document.querySelector('button[aria-label="Go back to tasks"]')) return 'single';
+    if (qContainers().length) return 'list';
+    return null;
+  }
+
+  function applyViewMode(mode) {
+    if (mode === currentViewMode) return;
+    log('View mode change:', currentViewMode, '->', mode);
+
+    if (mode === 'single') {
+      resetSingleState();
+      for (const el of Array.from(tracked)) {
+        const st = state.get(el);
+        if (!st) continue;
+        st.active = false;
+        st.completed = false;
+        st.announcedCompleting = false;
+        st.suspended = true;
+        st.lastName = null;
+      }
+    } else {
+      resetSingleState();
+      for (const el of Array.from(tracked)) {
+        const st = state.get(el);
+        if (!st) continue;
+        st.active = false;
+        st.completed = false;
+        st.announcedCompleting = false;
+        st.suspended = false;
+        st.lastName = null;
+      }
+    }
+
+    currentViewMode = mode;
+  }
+
+  function updateViewMode() {
+    applyViewMode(detectViewMode());
+  }
+
   function getSingleTaskName() {
     const selectors = [
       '.flex.min-w-0.flex-col.text-sm span.truncate.font-medium',
@@ -333,6 +388,9 @@
   }
 
   function updateSingleTaskState() {
+    updateViewMode();
+    if (currentViewMode !== 'single') return;
+
     const name = getSingleTaskName();
     if (singleState.lastName !== name) {
       singleState.active = false;
@@ -384,5 +442,6 @@
     attributeFilter: ['class', 'style', 'aria-hidden', 'aria-live'],
   });
 
+  updateViewMode();
   updateSingleTaskState();
 })();
