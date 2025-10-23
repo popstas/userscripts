@@ -2,12 +2,13 @@
 // @name         Whatsapp fix
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description
+// @description  Hide "New messages" block in chat
 // @author       popstas
 // @match        https://web.whatsapp.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.userscript.js
 // ==/UserScript==
 
 (function() {

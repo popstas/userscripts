@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         ChatGPT: Append last assistant question to prompt (init + SPA)
+// @name         ChatGPT Question Buttons
 // @namespace    https://greasyfork.org/en/users/you
 // @version      1.2.0
-// @description  Находит последний <p> с вопросом в сообщениях ассистента и добавляет кнопки Yes / Yes N (если есть «или»); обрабатывает уже существующие и новые сообщения
+// @description  Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 // @match        https://chatgpt.com/*
 // @run-at       document-idle
 // @grant        none
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js
 // ==/UserScript==
 
 (function () {

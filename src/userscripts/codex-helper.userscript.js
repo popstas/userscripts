@@ -7,6 +7,7 @@
 // @run-at       document-idle
 // @grant        none
 // @noframes
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.userscript.js
 // ==/UserScript==
 
 (function () {
