@@ -41,17 +41,6 @@ Finds the last paragraph with a question in assistant messages and adds Yes butt
 
 ![codex-helper.gif](../../assets/demo/codex-helper.gif)
 
-## Whatsapp fix 0.1.2
-
-[Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
-
-Hide "New messages" block in chat
-
-- **File:** [`whatsapp-fix.user.js`](../../src/userscripts/whatsapp-fix.user.js)
-- **Matches:** `https://web.whatsapp.com/*`
-- **Grants:** `GM_xmlhttpRequest`, `GM_getResourceText`, `GM_addStyle`
-
-
 ## Installation
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
 2. Go to [src/userscripts](src/userscripts), choose userscript you want to install

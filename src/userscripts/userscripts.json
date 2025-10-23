@@ -47,22 +47,5 @@
     "assets": [
       "assets/demo/codex-helper.gif"
     ]
-  },
-  {
-    "id": "whatsapp-fix",
-    "file": "src/userscripts/whatsapp-fix.user.js",
-    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js",
-    "match": [
-      "https://web.whatsapp.com/*"
-    ],
-    "grant": [
-      "GM_xmlhttpRequest",
-      "GM_getResourceText",
-      "GM_addStyle"
-    ],
-    "name": "Whatsapp fix",
-    "version": "0.1.2",
-    "description": "Hide \"New messages\" block in chat",
-    "assets": []
   }
 ]
