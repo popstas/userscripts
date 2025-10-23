@@ -3,9 +3,8 @@ Userscripts for ChatGPT, Codex, Telegram, Whatsapp
 
 See details at [src/userscripts](src/userscripts).
 
-## Installation
+## Before install any userscript
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
-2. Go to [src/userscripts](src/userscripts), choose userscript you want to install
-3. Go to RAW of selected userscript, Tampermonkey should open it in editor
-4. Click "Install" button
+2. Go to this page, choose userscript you want to install
+3. Click "Install" link, then in Tampermonkey click "Install" or "Overwrite" button
 
