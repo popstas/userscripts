@@ -51,22 +51,33 @@ async function generateReadme() {
   ];
 
   scripts.forEach((script) => {
+    const filename = path.basename(script.file);
+
     lines.push(`## ${script.name} ${script.version}`);
     lines.push('');
-    lines.push(formatDescription(script.description));
-    lines.push('');
+    lines.push(`- **Install:** [${filename}](${script.rawUrl})`);
     lines.push(
-      `- **File:** [\`${script.file}\`](${resolveFromReadme(script.file)})`
-    );
-    lines.push(
-      `- **RAW** [${path.basename(script.file)}](${script.rawUrl})`
+      `- **File:** [\`${filename}\`](${resolveFromReadme(script.file)})`
     );
     lines.push(`- **Matches:** ${formatInlineList(script.match)}`);
     lines.push(`- **Grants:** ${formatInlineList(script.grant)}`);
     lines.push('');
+    lines.push(formatDescription(script.description));
+    lines.push('');
     formatDemoSection(lines, script.assets);
     lines.push('');
   });
+
+  lines.push('## Installation');
+  lines.push('1. Install [Tampermonkey](https://www.tampermonkey.net/)');
+  lines.push(
+    '2. Go to [src/userscripts](src/userscripts), choose userscript you want to install'
+  );
+  lines.push(
+    '3. Go to RAW of selected userscript, Tampermonkey should open it in editor'
+  );
+  lines.push('4. Click "Install" button');
+  lines.push('');
 
   await fs.writeFile(readmePath, `${lines.join('\n')}\n`, 'utf8');
 

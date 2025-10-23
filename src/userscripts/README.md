@@ -4,43 +4,49 @@
 
 ## Bladificator 0.1.2
 
-Разбавляет скучный чат с коллегами ноткой тупого юмора
-
-- **File:** [`src/userscripts/telegram-bladificator.user.js`](../../src/userscripts/telegram-bladificator.user.js)
-- **RAW** [telegram-bladificator.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js)
+- **Install:** [telegram-bladificator.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js)
+- **File:** [`telegram-bladificator.user.js`](../../src/userscripts/telegram-bladificator.user.js)
 - **Matches:** `https://web.telegram.org/*`
 - **Grants:** `GM_addStyle`
+
+Разбавляет скучный чат с коллегами ноткой тупого юмора
 
 
 ## ChatGPT Question Buttons 1.2.2
 
-Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
-
-- **File:** [`src/userscripts/chatgpt-question-buttons.user.js`](../../src/userscripts/chatgpt-question-buttons.user.js)
-- **RAW** [chatgpt-question-buttons.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
+- **Install:** [chatgpt-question-buttons.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
+- **File:** [`chatgpt-question-buttons.user.js`](../../src/userscripts/chatgpt-question-buttons.user.js)
 - **Matches:** `https://chatgpt.com/*`
 - **Grants:** `none`
+
+Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 
 **Demo:**
 ![chatgpt-question-buttons.png](../../assets/demo/chatgpt-question-buttons.png)
 
 ## codex-helper 1.6.2
 
-Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
-
-- **File:** [`src/userscripts/codex-helper.user.js`](../../src/userscripts/codex-helper.user.js)
-- **RAW** [codex-helper.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
+- **Install:** [codex-helper.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
+- **File:** [`codex-helper.user.js`](../../src/userscripts/codex-helper.user.js)
 - **Matches:** `https://chatgpt.com/codex*`
 - **Grants:** `none`
+
+Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
 
 
 ## Whatsapp fix 0.1.2
 
-Hide "New messages" block in chat
-
-- **File:** [`src/userscripts/whatsapp-fix.user.js`](../../src/userscripts/whatsapp-fix.user.js)
-- **RAW** [whatsapp-fix.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
+- **Install:** [whatsapp-fix.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
+- **File:** [`whatsapp-fix.user.js`](../../src/userscripts/whatsapp-fix.user.js)
 - **Matches:** `https://web.whatsapp.com/*`
 - **Grants:** `GM_xmlhttpRequest`, `GM_getResourceText`, `GM_addStyle`
 
+Hide "New messages" block in chat
+
+
+## Installation
+1. Install [Tampermonkey](https://www.tampermonkey.net/)
+2. Go to [src/userscripts](src/userscripts), choose userscript you want to install
+3. Go to RAW of selected userscript, Tampermonkey should open it in editor
+4. Click "Install" button
 
