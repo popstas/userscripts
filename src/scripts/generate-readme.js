@@ -32,6 +32,7 @@ function formatDemoSection(lines, assets) {
   }
 
   lines.push('**Demo:**');
+  lines.push('');
 
   assets.forEach((asset) => {
     const label = path.basename(asset);
@@ -55,7 +56,8 @@ async function generateReadme() {
 
     lines.push(`## ${script.name} ${script.version}`);
     lines.push('');
-    lines.push(`- **Install:** [${filename}](${script.rawUrl})`);
+    lines.push(`[Install](${script.rawUrl})`);
+    lines.push('');
     lines.push(
       `- **File:** [\`${filename}\`](${resolveFromReadme(script.file)})`
     );

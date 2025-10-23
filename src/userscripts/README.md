@@ -4,7 +4,8 @@
 
 ## Bladificator 0.1.2
 
-- **Install:** [telegram-bladificator.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js)
+[Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js)
+
 - **File:** [`telegram-bladificator.user.js`](../../src/userscripts/telegram-bladificator.user.js)
 - **Matches:** `https://web.telegram.org/*`
 - **Grants:** `GM_addStyle`
@@ -14,7 +15,8 @@
 
 ## ChatGPT Question Buttons 1.2.2
 
-- **Install:** [chatgpt-question-buttons.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
+[Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
+
 - **File:** [`chatgpt-question-buttons.user.js`](../../src/userscripts/chatgpt-question-buttons.user.js)
 - **Matches:** `https://chatgpt.com/*`
 - **Grants:** `none`
@@ -22,11 +24,13 @@
 Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 
 **Demo:**
+
 ![chatgpt-question-buttons.png](../../assets/demo/chatgpt-question-buttons.png)
 
 ## codex-helper 1.6.2
 
-- **Install:** [codex-helper.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
+[Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js)
+
 - **File:** [`codex-helper.user.js`](../../src/userscripts/codex-helper.user.js)
 - **Matches:** `https://chatgpt.com/codex*`
 - **Grants:** `none`
@@ -36,7 +40,8 @@ Finds the last paragraph with a question in assistant messages and adds Yes butt
 
 ## Whatsapp fix 0.1.2
 
-- **Install:** [whatsapp-fix.user.js](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
+[Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js)
+
 - **File:** [`whatsapp-fix.user.js`](../../src/userscripts/whatsapp-fix.user.js)
 - **Matches:** `https://web.whatsapp.com/*`
 - **Grants:** `GM_xmlhttpRequest`, `GM_getResourceText`, `GM_addStyle`
