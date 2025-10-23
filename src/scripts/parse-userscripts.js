@@ -73,7 +73,7 @@ function parseMetadataBlock(content) {
 }
 
 async function findDemoAssets(baseName) {
-  const extensions = ['png', 'gif', 'mp4'];
+  const extensions = ['png', 'gif'];
   const assets = [];
 
   await Promise.all(
