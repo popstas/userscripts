@@ -1,8 +1,8 @@
 [
   {
     "id": "telegram-bladificator",
-    "file": "src/userscripts/telegram-bladificator.userscript.js",
-    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.userscript.js",
+    "file": "src/userscripts/telegram-bladificator.user.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/telegram-bladificator.user.js",
     "match": [
       "https://web.telegram.org/*"
     ],
@@ -10,14 +10,14 @@
       "GM_addStyle"
     ],
     "name": "Bladificator",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Разбавляет скучный чат с коллегами ноткой тупого юмора",
     "assets": []
   },
   {
     "id": "chatgpt-question-buttons",
-    "file": "src/userscripts/chatgpt-question-buttons.userscript.js",
-    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.userscript.js",
+    "file": "src/userscripts/chatgpt-question-buttons.user.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js",
     "match": [
       "https://chatgpt.com/*"
     ],
@@ -25,7 +25,7 @@
       "none"
     ],
     "name": "ChatGPT Question Buttons",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is \"or\"); processes existing and new messages",
     "assets": [
       "assets/demo/chatgpt-question-buttons.png"
@@ -33,8 +33,8 @@
   },
   {
     "id": "codex-helper",
-    "file": "src/userscripts/codex-helper.userscript.js",
-    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.userscript.js",
+    "file": "src/userscripts/codex-helper.user.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js",
     "match": [
       "https://chatgpt.com/codex*"
     ],
@@ -42,14 +42,14 @@
       "none"
     ],
     "name": "codex-helper",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "description": "Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени (\"Unnamed task\"). Не объявляет \"Task complete\", если ранее было \"Completing the task\". Считает \"Completing\" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).",
     "assets": []
   },
   {
     "id": "whatsapp-fix",
-    "file": "src/userscripts/whatsapp-fix.userscript.js",
-    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.userscript.js",
+    "file": "src/userscripts/whatsapp-fix.user.js",
+    "rawUrl": "https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/whatsapp-fix.user.js",
     "match": [
       "https://web.whatsapp.com/*"
     ],
@@ -59,7 +59,7 @@
       "GM_addStyle"
     ],
     "name": "Whatsapp fix",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Hide \"New messages\" block in chat",
     "assets": []
   }

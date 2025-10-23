@@ -125,7 +125,7 @@ async function parseUserscripts() {
   const scripts = [];
 
   for (const entry of entries) {
-    if (!entry.isFile() || !entry.name.endsWith('.userscript.js')) {
+    if (!entry.isFile() || !entry.name.endsWith('.user.js')) {
       continue;
     }
 
@@ -140,7 +140,7 @@ async function parseUserscripts() {
     }
 
     const meta = parseMetadataBlock(content);
-    const baseName = entry.name.replace(/\.userscript\.js$/i, '');
+    const baseName = entry.name.replace(/\.user\.js$/i, '');
     const demoAssets = await findDemoAssets(baseName);
 
     scripts.push({

@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         codex-helper
 // @namespace    https://chatgpt.com/codex
-// @version      1.6.1
+// @version      1.6.2
 // @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
 // @match        https://chatgpt.com/codex*
 // @run-at       document-idle
 // @grant        none
 // @noframes
-// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.userscript.js
-// @downloadURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.userscript.js
+// @updateURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js
+// @downloadURL https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/codex-helper.user.js
 // ==/UserScript==
 
 (function () {
