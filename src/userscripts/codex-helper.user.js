@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         codex-helper
 // @namespace    https://chatgpt.com/codex
-// @version      1.6.2
-// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container. Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-tertiary вида N/N (2/2, 3/3 и т.п.).
+// @version      1.7.0
+// @description  Следит за появлением/исчезновением .loading-shimmer-pure-text ИЛИ svg>circle в .task-row-container, а на странице задачи — за статусной кнопкой (Checking git status, Completing the task и т.п.). Пишет статусы на холсте и (опционально) озвучивает. Игнорирует задачи без имени ("Unnamed task"). Не объявляет "Task complete", если ранее было "Completing the task". Считает "Completing" также по прогрессу в .text-token-text-terтиary вида N/N (2/2, 3/3 и т.п.).
 // @match        https://chatgpt.com/codex*
 // @run-at       document-idle
 // @grant        none
@@ -150,7 +150,7 @@
 
   const qContainers = () => Array.from(document.querySelectorAll('.task-row-container'));
 
-  function getTaskName(container) {
+  function getListTaskName(container) {
     const nameEl = container.querySelector('.text-token-text-primary');
     const raw = (nameEl?.textContent || '').trim();
     // Игнорируем пустое имя и 'Unnamed task'
@@ -209,7 +209,7 @@
       const st = state.get(container);
       if (!st) return;
 
-      const name = getTaskName(container);
+      const name = getListTaskName(container);
       const shimmer = hasShimmer(container);
       const spinner = hasSpinner(container);
       const activeNow = shimmer || spinner;
@@ -288,4 +288,114 @@
     qContainers().forEach(ensureObserved);
     if (++tries > 20) clearInterval(scanTimer);
   }, 1000);
+
+  /** ==========================
+   *  Одиночная страница задачи
+   *  ========================== */
+  const singleState = {
+    active: false,
+    completed: false,
+    announcedCompleting: false,
+    lastStatus: '',
+    lastName: '',
+  };
+
+  function getSingleTaskName() {
+    const selectors = [
+      '.flex.min-w-0.flex-col.text-sm span.truncate.font-medium',
+      'header span.truncate.font-medium',
+    ];
+    for (const sel of selectors) {
+      const el = document.querySelector(sel);
+      const raw = (el?.textContent || '').trim();
+      if (raw && !/^unnamed task$/i.test(raw)) return raw;
+    }
+    return '';
+  }
+
+  function getStatusInfo() {
+    const spans = document.querySelectorAll('button span.line-clamp-1.font-medium.text-ellipsis');
+    for (const span of spans) {
+      const text = (span.textContent || '').trim();
+      if (!text) continue;
+      const button = span.closest('button');
+      if (!button) continue;
+      const className = button.className || '';
+      if (!className.includes('select-none')) continue;
+      return { text };
+    }
+    return null;
+  }
+
+  function updateSingleTaskState() {
+    const name = getSingleTaskName();
+    if (singleState.lastName !== name) {
+      singleState.active = false;
+      singleState.completed = false;
+      singleState.announcedCompleting = false;
+      singleState.lastStatus = '';
+      singleState.lastName = name;
+    }
+
+    const statusInfo = getStatusInfo();
+    const statusText = statusInfo ? statusInfo.text : '';
+    const hasStatus = Boolean(statusText);
+    const normalized = statusText.toLowerCase();
+    const isCompleting = hasStatus && normalized.includes('completing');
+
+    if (hasStatus) {
+      if (!singleState.active) {
+        singleState.active = true;
+        singleState.completed = false;
+        log('Single task active:', name, statusText);
+      }
+
+      if (statusText !== singleState.lastStatus) {
+        if (isCompleting) {
+          if (!singleState.announcedCompleting && name) {
+            const msg = `Completing the task: ${name}`;
+            HUD.show(msg, 'warn');
+            speak(msg);
+          }
+          singleState.announcedCompleting = true;
+        } else {
+          const msg = name ? `${statusText}: ${name}` : statusText;
+          HUD.show(msg, 'info');
+          speak(msg);
+        }
+      } else if (isCompleting && !singleState.announcedCompleting && name) {
+        const msg = `Completing the task: ${name}`;
+        HUD.show(msg, 'warn');
+        speak(msg);
+        singleState.announcedCompleting = true;
+      }
+    } else {
+      if (singleState.active && !singleState.completed) {
+        if (!singleState.announcedCompleting && name) {
+          const msg = `Task complete: ${name}`;
+          HUD.show(msg, 'ok');
+          speak(msg);
+        }
+        singleState.completed = true;
+        singleState.active = false;
+        singleState.announcedCompleting = false;
+        log('Single task completed:', name);
+      }
+    }
+
+    singleState.lastStatus = statusText;
+  }
+
+  const singleObserver = new MutationObserver(() => {
+    updateSingleTaskState();
+  });
+  singleObserver.observe(document.documentElement || document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+    attributes: true,
+    attributeFilter: ['class', 'style', 'aria-hidden', 'aria-live'],
+  });
+
+  updateSingleTaskState();
 })();
