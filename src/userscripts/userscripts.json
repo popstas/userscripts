@@ -25,7 +25,7 @@
       "none"
     ],
     "name": "ChatGPT Question Buttons",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is \"or\"); processes existing and new messages",
     "assets": [
       "assets/demo/chatgpt-question-buttons.png"

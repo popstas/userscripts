@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Question Buttons
 // @namespace    https://greasyfork.org/en/users/you
-// @version      1.2.2
+// @version      1.2.3
 // @description  Finds the last paragraph with a question in assistant messages and adds Yes buttons (Yes N when there is "or"); processes existing and new messages
 // @match        https://chatgpt.com/*
 // @run-at       document-idle
@@ -22,6 +22,13 @@
   };
 
   const BTN_CLASS = 'cgpt-yes-btn';
+  const isDebug = false;
+
+  function debug(...args) {
+    if (isDebug) {
+      console.log('[CGPT-QB]', ...args);
+    }
+  }
 
   function getPromptEditable() {
     return document.querySelector(SELECTORS.promptEditable);
@@ -61,16 +68,37 @@
     // очищаем ранее добавленные кнопки, чтобы не дублировать
     pEl.querySelectorAll('.' + BTN_CLASS).forEach((b) => b.remove());
 
-    const rawText = (pEl.innerText || '').trim();
+    const rawText = (pEl.textContent || pEl.innerText || '').trim();
 
-    // берём вопрос только до первого "?" (чтобы не схватить хвосты "Yes ...")
+    // ищем "?" и "хочешь"
     const qm = rawText.indexOf('?');
-    const baseWithQ = qm >= 0 ? rawText.slice(0, qm + 1) : rawText;
-    const questionClean = baseWithQ.replace(/\s+/g, ' ').trim();
-
-    // убираем финальный "?" для разбиения по "или"
-    const noQ = questionClean.replace(/\?$/, '');
-    const parts = noQ.split(/\s+или\s+/i).map(s => s.trim()).filter(Boolean);
+    const lowerText = rawText.toLowerCase();
+    const hm = lowerText.indexOf('хочешь');
+    
+    let baseText;
+    if (hm >= 0) {
+      // "хочешь" найдено - берём текст ПОСЛЕ "хочешь" (пропуская запятую и пробелы)
+      let afterPos = hm + 6; // 6 = длина слова "хочешь"
+      // пропускаем запятую и пробелы после "хочешь"
+      while (afterPos < rawText.length && /[,\s]/.test(rawText[afterPos])) {
+        afterPos++;
+      }
+      baseText = rawText.slice(afterPos);
+      // если есть "?" или точка, обрезаем до неё
+      const endMatch = baseText.match(/[.?]/);
+      if (endMatch) {
+        baseText = baseText.slice(0, endMatch.index);
+      }
+    } else if (qm >= 0) {
+      // "?" найден, берём до "?"
+      baseText = rawText.slice(0, qm);
+    } else {
+      // ничего не найдено
+      baseText = rawText;
+    }
+    
+    const questionClean = baseText.replace(/\s+/g, ' ').trim();
+    const parts = questionClean.split(/\s+или\s+/i).map(s => s.trim()).filter(Boolean);
 
     const makeBtn = (label, value) => {
       const btn = document.createElement('button');
@@ -106,18 +134,45 @@
   }
 
   function processAssistantMessage(msgEl) {
-    if (!msgEl) return;
+    debug('processAssistantMessage called', msgEl);
+    if (!msgEl) {
+      debug('No msgEl, returning');
+      return;
+    }
     const md = msgEl.querySelector(SELECTORS.markdown);
-    if (!md) return;
+    if (!md) {
+      debug('No markdown element found, returning');
+      debug('Available classes in msgEl:', msgEl.className);
+      debug('msgEl HTML:', msgEl.innerHTML.substring(0, 200));
+      return;
+    }
+    debug('Found markdown element:', md);
     const paras = md.querySelectorAll('p');
+    debug('Found paragraphs:', paras.length);
     if (!paras.length) return;
 
     let lastQuestionP = null;
     for (let i = paras.length - 1; i >= 0; i--) {
-      const t = paras[i].innerText || '';
-      if (t.includes('?')) { lastQuestionP = paras[i]; break; }
+      const t = (paras[i].textContent || paras[i].innerText || '').trim();
+      const tLower = t.toLowerCase();
+      debug(`Checking para ${i}:`, {
+        text: t.substring(0, 100),
+        hasQuestion: t.includes('?'),
+        hasХочешь: tLower.includes('хочешь'),
+        fullText: t
+      });
+      if (t.includes('?') || tLower.includes('хочешь')) {
+        debug('Found question paragraph at index', i);
+        lastQuestionP = paras[i];
+        break;
+      }
     }
-    if (lastQuestionP) ensureButtonForParagraph(lastQuestionP);
+    if (lastQuestionP) {
+      debug('Ensuring button for question paragraph');
+      ensureButtonForParagraph(lastQuestionP);
+    } else {
+      debug('No question paragraph found');
+    }
   }
 
   function scanAll() {

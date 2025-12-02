@@ -13,7 +13,7 @@
 - **Grants:** `GM_addStyle`
 
 
-## ChatGPT Question Buttons 1.2.2
+## ChatGPT Question Buttons 1.2.3
 
 [Install](https://raw.githubusercontent.com/popstas/userscripts/refs/heads/master/src/userscripts/chatgpt-question-buttons.user.js)
 

@@ -1,9 +1,10 @@
-# 1.0.0 (2025-10-23)
+# 1.0.0 (2025-12-02)
 
 
 ### Bug Fixes
 
 * include download urls in userscript metadata ([#2](https://github.com/popstas/userscripts/issues/2)) ([92a467f](https://github.com/popstas/userscripts/commit/92a467f431f3d3eba513e97d8e245509430657c6))
+* Remove whatsapp-fix.user.js ([1067cec](https://github.com/popstas/userscripts/commit/1067cec7a4aa2ded4cea8ea5678851deb90560b9))
 
 
 ### Features
