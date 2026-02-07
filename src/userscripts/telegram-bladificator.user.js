@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bladificator
 // @namespace    http://tampermonkey.net/
-// @version      0.1.2
+// @version      0.1.3
 // @description  Разбавляет скучный чат с коллегами ноткой тупого юмора
 // @author       You
 // @match        https://web.telegram.org/*
@@ -14,15 +14,23 @@
 (function() {
     'use strict';
 
-  const replaces = [
-    { from: 'Коллеги', to: 'Блять' },
-    { from: 'Коллег', to: 'Блять' },
-    { from: 'Благодарю', to: 'Заебал' },
-    { from: 'Спасибо', to: 'Заебал' },
-    { from: 'Добрый вечер', to: 'Блять' },
-    { from: 'Добрый день', to: 'Блять' },
-    { from: 'Здравствуйте', to: 'Блять' },
-  ];
+    const replaces = [
+      { from: 'Коллеги', to: 'Блять' },
+      { from: 'Коллег', to: 'Блять' },
+      { from: 'Благодарю', to: 'Заебал' },
+      { from: 'Спасибо большое', to: 'Пиздец заебал' },
+      { from: 'Большое спасибо', to: 'Заебал пиздец' },
+      { from: 'Хорошо, спасибо', to: 'Ваще заебал' },
+      { from: 'Спасибо', to: 'Заебал' },
+      { from: 'Спасиб', to: 'Заебал' },
+      { from: 'Пожалуйста', to: 'Блять' },
+      { from: 'Добрый вечер', to: 'Блять' },
+      { from: 'Добрый день', to: 'Блять' },
+      { from: 'Добрый', to: 'Бля' },
+      { from: 'Здравствуйте', to: 'Блять' },
+      { from: 'Привет', to: 'Блять' },
+      { from: 'Хорошо', to: 'Блять' },
+    ];
 
   function bladificator() {
     const msgs = document.querySelectorAll('.message:not(.bladified)');
